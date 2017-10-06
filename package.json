@@ -1,0 +1,55 @@
+{
+    "name": "lens-flow",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/ts/index.js",
+    "types": "./dist/ts/index.d.ts",
+    "scripts": {
+        "start": "npm run storybook",
+        "build": "tsc & webpack",
+        "lint": "tslint --project ./tsconfig.json",
+        "prepublish": "npm run build",
+        "test": "karma start",
+        "storybook": "start-storybook -p 6006",
+        "build-storybook": "build-storybook --output-dir dist/storybook"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aspirisen/lens-flow.git"
+    },
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/aspirisen/lens-flow/issues"
+    },
+    "homepage": "https://github.com/aspirisen/lens-flow#readme",
+    "devDependencies": {
+        "@storybook/addon-actions": "3.2.12",
+        "@storybook/addon-links": "3.2.12",
+        "@storybook/react": "3.2.12",
+        "@types/chai": "4.0.4",
+        "@types/karma": "1.7.0",
+        "@types/mocha": "2.2.43",
+        "@types/node": "8.0.33",
+        "@types/react": "16.0.9",
+        "@types/storybook__addon-actions": "3.0.1",
+        "@types/storybook__addon-links": "3.0.2",
+        "@types/storybook__react": "3.0.5",
+        "chai": "4.1.2",
+        "html-webpack-plugin": "2.30.1",
+        "karma": "1.7.1",
+        "karma-chrome-launcher": "2.2.0",
+        "karma-mocha": "1.3.0",
+        "karma-mocha-reporter": "2.2.4",
+        "karma-sourcemap-loader": "0.3.7",
+        "karma-webpack": "2.0.4",
+        "mocha": "4.0.1",
+        "react": "16.0.0",
+        "react-dom": "16.0.0",
+        "ts-loader": "2.3.7",
+        "ts-node": "3.3.0",
+        "tslint": "5.7.0",
+        "typescript": "2.5.3",
+        "webpack": "3.6.0"
+    }
+}
