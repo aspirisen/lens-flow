@@ -149,7 +149,7 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
 
     public forEach(cb: types.IteratorCallback<Value, void>) {
         const data = this.get() || [];
-        data.forEach((v, i, a) => cb(v, i, a, this.item(i)));
+        data.forEach((v, i, a) => cb(this.item(i), i, a, v));
     }
 
     public find(cb: types.IteratorCallback<Value, Value>) {
@@ -157,7 +157,7 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
         let found: Value | null = null;
 
         data.forEach((v, i, a) => {
-            if (cb(v, i, a, this.item(i))) {
+            if (cb(this.item(i), i, a, v)) {
                 found = found || v;
             }
         });
@@ -167,7 +167,7 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
 
     public map<Result>(cb: types.IteratorCallback<Value, Result>): Result[] {
         const result: Result[] = [];
-        this.forEach((v, i, a, l) => result.push(cb(v, i, a, l)));
+        this.forEach((l, i, a, v) => result.push(cb(l, i, a, v)));
         return result;
     }
 

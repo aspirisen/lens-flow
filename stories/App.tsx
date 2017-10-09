@@ -25,7 +25,7 @@ class Form extends React.Component<{ lens: ArrayLensProperty<Person, any> }> {
     private addNew = () => this.props.lens.insert({ age: Math.random(), name: "", code: "" });
 
     private renderList() {
-        return this.props.lens.map(({ }, i, { }, l) => (
+        return this.props.lens.map((l, i) => (
             <div key={i}>
                 <button onClick={() => this.props.lens.remove(l)}>Remove</button>{" "}
                 {JSON.stringify(l.getValidationState())}

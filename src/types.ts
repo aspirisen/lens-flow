@@ -10,7 +10,7 @@ export interface TurnTransform<Value, State> {
     state: State;
 }
 
-export type IteratorCallback<Value, Result> = (item: Value, index: number, arr: Value[], lens: Lens<Value>) => Result;
+export type IteratorCallback<Value, Result> = (lens: Lens<Value>, index: number, arr: Value[], item: Value) => Result;
 
 export interface ValidationState {
     isValid: boolean;
