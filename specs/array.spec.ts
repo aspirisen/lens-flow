@@ -123,4 +123,29 @@ describe("array", () => {
             .to.be.deep.equal([{ two: "two" }]);
     });
 
+    it("Should check that insert returns the index of the inserted element", () => {
+        const lens = getLens();
+        let position = lens.array("list").insertMany([{ id: 3, name: "three" }]);
+
+        expect(position)
+            .to.be.equal(2);
+
+        lens.prop("list").set([]);
+
+        position = lens.array("list").insertMany([]);
+
+        expect(position)
+            .to.be.equal(-1);
+
+        position = lens.array("list").insertMany([{ id: 4, name: "four" }]);
+
+        expect(position)
+            .to.be.equal(0);
+
+        position = lens.array("list").insert({ id: 5, name: "five" });
+
+        expect(position)
+            .to.be.equal(1);
+    });
+
 });

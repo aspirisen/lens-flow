@@ -84,8 +84,10 @@ export class LensProperty<Value, ParentValue> extends Lens<Value> {
         if (this.parent) {
             const validationState = this.parent.getValidationState() as any;
 
-            if (validationState) {
+            if (validationState && validationState.props) {
                 return validationState.props[this.propName];
+            } else {
+                return validationState;
             }
         }
 
@@ -147,16 +149,16 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
 
     public forEach(cb: types.IteratorCallback<Value, void>) {
         const data = this.get() || [];
-        data.forEach((e, i, a) => cb(e, i, a, this.item(i)));
+        data.forEach((v, i, a) => cb(v, i, a, this.item(i)));
     }
 
     public find(cb: types.IteratorCallback<Value, Value>) {
         const data = this.get() || [];
         let found: Value | null = null;
 
-        data.forEach((e, i, a) => {
-            if (cb(e, i, a, this.item(i))) {
-                found = found || e;
+        data.forEach((v, i, a) => {
+            if (cb(v, i, a, this.item(i))) {
+                found = found || v;
             }
         });
 
@@ -165,7 +167,7 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
 
     public map<Result>(cb: types.IteratorCallback<Value, Result>): Result[] {
         const result: Result[] = [];
-        this.forEach((l, e, i, a) => result.push(cb(l, e, i, a)));
+        this.forEach((v, i, a, l) => result.push(cb(v, i, a, l)));
         return result;
     }
 
@@ -184,14 +186,20 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
         this.set(items);
     }
 
-    public insert(item: Value) {
-        this.insertMany([item]);
+    public insert(item: Value): number {
+        return this.insertMany([item]);
     }
 
-    public insertMany(items: Value[] = []) {
+    public insertMany(items: Value[] = []): number {
         const value = this.get() || [];
         const result = value.concat(items);
         this.set(result);
+
+        if (result.length > 0) {
+            return value.length;
+        } else {
+            return -1;
+        }
     }
 
     public insertUnique(items: Value[] = []) {
