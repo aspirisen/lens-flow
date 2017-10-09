@@ -85,9 +85,9 @@ export class LensProperty<Value, ParentValue> extends Lens<Value> {
             const validationState = this.parent.getValidationState() as any;
 
             if (validationState && validationState.props) {
-                return validationState.props[this.propName];
+                return validationState.props[this.propName] || {};
             } else {
-                return validationState;
+                return validationState || {};
             }
         }
 
