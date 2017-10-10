@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const dist = 'dist';
 const isTestMode = process.env.NODE_ENV == 'test';
+const isPublishing = !!process.env.PUBLISHING;
 
 config = {
     context: path.resolve('./'),
@@ -10,7 +11,7 @@ config = {
     output: {
         filename: `${dist}/[name].js`,
         publicPath: '/',
-        libraryTarget: isTestMode ? undefined : "commonjs"
+        libraryTarget: !isTestMode && isPublishing ? 'commonjs' : undefined,
     },
 
     resolve: {
@@ -27,7 +28,7 @@ config = {
         ],
     },
 
-    devtool: isTestMode ? 'eval' : 'source-map',
+    devtool: isPublishing ? 'source-map' : 'eval',
 
     devServer: {
         contentBase: path.resolve('./dist'),
@@ -42,9 +43,9 @@ config = {
 };
 
 if (isTestMode) {
-    config.entry = { specs: './index.spec' };
+    config.entry = {specs: './index.spec'};
 } else {
-    config.entry = { lens: './index' };
+    config.entry = {lens: './index'};
 }
 
 module.exports = config;

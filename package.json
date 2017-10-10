@@ -1,6 +1,6 @@
 {
     "name": "lens-flow",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "description": "",
     "main": "dist/ts/index.js",
     "types": "./dist/ts/index.d.ts",
@@ -8,8 +8,8 @@
         "start": "npm run storybook",
         "build": "tsc & webpack",
         "lint": "tslint --project ./tsconfig.json",
-        "prepublish": "npm run build",
-        "test": "karma start",
+        "prepublish": "npm run lint & cross-env PUBLISHING=true npm run test & tsc & cross-env PUBLISHING=true NODE_ENV=production webpack",
+        "test": "cross-env NODE_ENV=test karma start",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook --output-dir dist/storybook"
     },
@@ -36,6 +36,7 @@
         "@types/storybook__addon-links": "3.0.2",
         "@types/storybook__react": "3.0.5",
         "chai": "4.1.2",
+        "cross-env": "5.0.5",
         "html-webpack-plugin": "2.30.1",
         "karma": "1.7.1",
         "karma-chrome-launcher": "2.2.0",

@@ -1,9 +1,9 @@
 import { Config, ConfigOptions } from "karma";
 
-process.env.NODE_ENV = "test";
-
 // tslint:disable-next-line:no-var-requires
 const webpackConfig = require("./webpack.config.js");
+
+const isPublishing = !!process.env.PUBLISHING;
 
 module.exports = (config: Config) => {
     config.set({
@@ -58,7 +58,7 @@ module.exports = (config: Config) => {
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
-        singleRun: true,
+        singleRun: isPublishing,
 
         // Concurrency level
         // how many browser should be started simultaneous
