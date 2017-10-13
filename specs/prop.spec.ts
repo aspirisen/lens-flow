@@ -226,4 +226,37 @@ describe("prop", () => {
             .to.be.equal(lens.prop("obj").prop("internal").prop("a").getInterop().onChange);
     });
 
+    it("Should check that prop is changed by reference when you call set", () => {
+        const lens = getLens();
+
+        expect(lens.prop("obj").prop("internal").prop("a"))
+            .to.be.equal(lens.prop("obj").prop("internal").prop("a"));
+
+        const before = lens.prop("obj").prop("internal").prop("a");
+        before.set("asd");
+        const after = lens.prop("obj").prop("internal").prop("a");
+
+        expect(before)
+            .to.be.not.equal(after);
+    });
+
+    it("Should check that another prop is not changed by reference when you call set", () => {
+        const lens = getLens();
+
+        expect(lens.prop("obj").prop("internal").prop("a"))
+            .to.be.equal(lens.prop("obj").prop("internal").prop("a"));
+
+        const beforeName = lens.prop("name");
+        const before = lens.prop("obj").prop("internal").prop("a");
+        before.set("asd");
+        const after = lens.prop("obj").prop("internal").prop("a");
+        const afterName = lens.prop("name");
+
+        expect(before)
+            .to.be.not.equal(after);
+
+        expect(beforeName)
+            .to.be.equal(afterName);
+    });
+
 });

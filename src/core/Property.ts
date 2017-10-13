@@ -34,7 +34,7 @@ export class LensProperty<Value, ParentValue> extends Lens<Value> {
             this.state = this.parent.state.prop(lambdaOrName, initialState);
         }
 
-        const fromCache = this.getFromCache();
+        const fromCache = this.getCache();
 
         if (fromCache) {
             return fromCache;
@@ -61,6 +61,7 @@ export class LensProperty<Value, ParentValue> extends Lens<Value> {
 
     public set(value: Value): void {
         const parentValue = this.parent.get();
+        this.removeCache();
 
         if (parentValue == null) {
             this.setWhenNull(value);
@@ -68,6 +69,7 @@ export class LensProperty<Value, ParentValue> extends Lens<Value> {
             const newValue = this.getNewValue(parentValue, value);
             this.parent.set(newValue);
         }
+
     }
 
     public getMetadata(): types.Metadata<Value> {
@@ -120,8 +122,12 @@ export class LensProperty<Value, ParentValue> extends Lens<Value> {
         this.cache("prop", this.propName, this);
     }
 
-    protected getFromCache() {
-        return this.getCache("prop", this.propName);
+    protected getCache() {
+        return this.getFromCache("prop", this.propName);
+    }
+
+    protected removeCache() {
+        this.removeFromCache("prop", this.propName);
     }
 
 }
@@ -238,9 +244,13 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
         this.cache("array", this.propName, this);
     }
 
-    protected getFromCache() {
+    protected removeCache() {
+        this.removeFromCache("array", this.propName);
+    }
+
+    protected getCache() {
         if (this.defaultOnNullValue == null) {
-            return this.getCache("array", this.propName);
+            return this.getFromCache("array", this.propName);
         } else {
             return null;
         }

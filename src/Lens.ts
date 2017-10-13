@@ -109,12 +109,18 @@ export abstract class Lens<Value> {
         this.parent.lensCache[kind][key] = lens;
     }
 
-    protected getCache(kind: string, key: string): this | null {
+    protected getFromCache(kind: string, key: string): this | null {
         if (!this.parent.lensCache[kind]) {
             this.parent.lensCache[kind] = {};
         }
 
         return this.parent.lensCache[kind][key] as this;
+    }
+
+    protected removeFromCache(kind: string, key: string) {
+        if (this.parent.lensCache[kind]) {
+            delete this.parent.lensCache[kind][key] ;
+        }
     }
 
     protected getWhenNull(): Value | null {
