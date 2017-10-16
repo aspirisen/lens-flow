@@ -158,13 +158,15 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
         data.forEach((v, i, a) => cb(this.item(i), i, a, v));
     }
 
-    public find(cb: types.IteratorCallback<Value, Value>) {
+    public find(cb: types.IteratorCallback<Value, boolean>): Lens<Value> | null {
         const data = this.get() || [];
-        let found: Value | null = null;
+        let found: Lens<Value> | null = null;
 
         data.forEach((v, i, a) => {
-            if (cb(this.item(i), i, a, v)) {
-                found = found || v;
+            const currentItem = this.item(i);
+
+            if (cb(currentItem, i, a, v)) {
+                found = found || currentItem;
             }
         });
 
