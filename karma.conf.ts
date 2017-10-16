@@ -1,11 +1,9 @@
-import { Config, ConfigOptions } from "karma";
-
 // tslint:disable-next-line:no-var-requires
 const webpackConfig = require("./webpack.config.js");
 
 const isPublishing = !!process.env.PUBLISHING;
 
-module.exports = (config: Config) => {
+module.exports = (config: any) => {
     config.set({
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: "",
@@ -54,7 +52,7 @@ module.exports = (config: Config) => {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ["ChromeHeadless"], // Chrome, ChromeHeadless
+        browsers: ["Chrome"], // Chrome, ChromeHeadless
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
@@ -63,5 +61,5 @@ module.exports = (config: Config) => {
         // Concurrency level
         // how many browser should be started simultaneous
         concurrency: Infinity,
-    } as ConfigOptions);
+    });
 };
