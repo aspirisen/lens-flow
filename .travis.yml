@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+- '8.1.4'
+addons:
+  chrome: stable
+script:
+- npm run ci
+notifications:
+  slack: ahml-apxd:uyhinHUHvIAQZ6Cy6xFMzwAM
