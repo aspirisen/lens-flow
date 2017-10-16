@@ -148,4 +148,41 @@ describe("array", () => {
             .to.be.equal(1);
     });
 
+    it("#find: Should find an item in array", () => {
+        const lens = getLens();
+        const list = lens.array("list");
+        const found = list.find((lensItem, {}, {}, item) => {
+            const lensValue = lensItem.get();
+            return Boolean(lensValue && lensValue.name === "two" && item.name === "two");
+        });
+
+        expect(found).to.exist;
+        expect(found && found.get()).to.deep.equal(value.list[1]);
+    });
+
+    it("#find: Should return null from array", () => {
+        const lens = getLens();
+        const emptyArrayLens = lens.array("objNull");
+
+        const found = emptyArrayLens.find((lensItem, {}, {}, item) => {
+            const lensValue = lensItem.get();
+            return Boolean(lensValue && lensValue.name === "two" && item.name === "two");
+        });
+
+        expect(found).to.be.null;
+    });
+
+    it("#find: Should return first found item from array", () => {
+        const lens = getLens();
+        const arrLens = lens.array("list");
+
+        arrLens.insert({...value.list[0], id: 3});
+
+        const found = arrLens.find((lensItem, {}, {}, item) => {
+            const lensValue = lensItem.get();
+            return Boolean(lensValue && lensValue.name === "one" && item.name === "one");
+        });
+
+        expect(found && found.get()).to.deep.equal(value.list[0]);
+    });
 });
