@@ -9,7 +9,7 @@
         "build": "tsc & webpack",
         "lint": "tslint --project ./tsconfig.json",
         "prepublish": "npm run lint & cross-env PUBLISHING=true npm run test & tsc & cross-env PUBLISHING=true NODE_ENV=production webpack",
-        "test": "cross-env NODE_ENV=test karma start",
+        "test": "cross-env NODE_ENV=test karma start --singleRun",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook --output-dir dist/storybook"
     },

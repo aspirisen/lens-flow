@@ -8,3 +8,5 @@ script:
 - npm run build
 - npm test
 - npm run lint
+notifications:
+  slack: ahml-apxd:uyhinHUHvIAQZ6Cy6xFMzwAM
