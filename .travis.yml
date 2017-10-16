@@ -4,9 +4,6 @@ node_js:
 addons:
   chrome: stable
 script:
-- npm install
-- npm run build
-- npm test
-- npm run lint
+- npm run ci
 notifications:
   slack: ahml-apxd:uyhinHUHvIAQZ6Cy6xFMzwAM
