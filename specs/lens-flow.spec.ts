@@ -1,56 +1,90 @@
 import { expect } from "chai";
-import { LensFlow } from "../";
+import { LensFlow, StatefulLens } from "../";
 import { getValue } from "./mock";
 
 describe("lens-flow", () => {
-
     it("Metadata queries should returns correct results", () => {
         let data = getValue();
 
-        const lens = new LensFlow(() => data, (d) => data = d, () => ({
-            isReadonly: true,
-            props: {
-                obj: {
-                    props: {
-                        name: {
-                            isRequired: true,
-                            props: undefined,
-                        },
-                        value: {
-                            isRequired: false,
-                            isReadonly: true,
-                            props: undefined,
+        const lens = new LensFlow(
+            () => data,
+            (d) => (data = d),
+            () => ({
+                isReadonly: true,
+                props: {
+                    obj: {
+                        props: {
+                            name: {
+                                isRequired: true,
+                                props: undefined,
+                            },
+                            value: {
+                                isRequired: false,
+                                isReadonly: true,
+                                props: undefined,
+                            },
                         },
                     },
                 },
-            },
-        }));
+            }),
+        );
 
         const objProp = lens.prop((s) => s.obj);
-        expect(objProp.getMetadataProp("isRequired"))
-            .to.be.null;
-        expect(objProp.getMetadataProp("isReadonly"))
-            .to.be.true;
+        expect(objProp.getMetadataProp("isRequired")).to.be.null;
+        expect(objProp.getMetadataProp("isReadonly")).to.be.true;
 
         const nameProp = objProp.prop((o) => o.name);
-        expect(nameProp.getMetadataProp("isRequired"))
-            .to.be.true;
-        expect(nameProp.getMetadataProp("isReadonly"))
-            .to.be.true; // parent values override children
+        expect(nameProp.getMetadataProp("isRequired")).to.be.true;
+        expect(nameProp.getMetadataProp("isReadonly")).to.be.true; // parent values override children
 
         const valueProp = objProp.prop((o) => o.value);
         const isRequired = valueProp.getMetadataProp("isRequired");
 
-        expect(isRequired)
-            .to.be.false;
-        expect(valueProp.getMetadataProp("isReadonly"))
-            .to.be.true; // get value from parent
+        expect(isRequired).to.be.false;
+        expect(valueProp.getMetadataProp("isReadonly")).to.be.true; // get value from parent
 
         const stringProp = lens.prop((o) => o.stringProp); // prop w/ o explicit metadata
-        expect(stringProp.getMetadataProp("isRequired"))
-            .to.be.null;
-        expect(stringProp.getMetadataProp("isReadonly"))
-            .to.be.true; // get value from parent
+        expect(stringProp.getMetadataProp("isRequired")).to.be.null;
+        expect(stringProp.getMetadataProp("isReadonly")).to.be.true; // get value from parent
     });
 
+    it("Should check that StatefulLens is immutable on set", () => {
+        const lens = new StatefulLens({ one: 1 }, {});
+        const lensSafe = lens;
+
+        lens.set({ one: 11 });
+        expect(lens).to.be.equal(lensSafe);
+        expect(lens.get()).to.be.deep.equal({ one: 11 });
+
+        let immutableLens = lens.immutable(
+            (nextLens) => (immutableLens = nextLens),
+        );
+        const immutableLensSafe = immutableLens;
+
+        immutableLens.set({ one: 111 });
+        expect(immutableLens).to.be.not.equal(immutableLensSafe);
+        expect(immutableLens.get()).to.be.deep.equal({ one: 111 });
+    });
+
+    it("Should check that LensFlow is immutable on set", () => {
+        let value = { one: 1 };
+        const lens = new LensFlow(
+            () => value,
+            (nextValue) => (value = nextValue),
+        );
+        const lensSafe = lens;
+
+        lens.set({ one: 11 });
+        expect(lens).to.be.equal(lensSafe);
+        expect(lens.get()).to.be.deep.equal({ one: 11 });
+
+        let immutableLens = lens.immutable(
+            (nextLens) => (immutableLens = nextLens),
+        );
+        const immutableLensSafe = immutableLens;
+
+        immutableLens.set({ one: 111 });
+        expect(immutableLens).to.be.not.equal(immutableLensSafe);
+        expect(immutableLens.get()).to.be.deep.equal({ one: 111 });
+    });
 });
