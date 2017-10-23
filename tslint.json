@@ -9,6 +9,7 @@
         "object-literal-sort-keys": false,
         "member-ordering": false,
         "ordered-imports": false,
+        "quotemark": false,
         "max-line-length": [true, 200]
     },
     "rulesDirectory": []
