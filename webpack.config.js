@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const dist = 'dist';
 const isTestMode = process.env.NODE_ENV == 'test';
@@ -23,6 +24,11 @@ config = {
             {
                 test: /\.tsx?$/,
                 loader: 'ts-loader',
+                options: {
+                    compilerOptions: {
+                        declaration: false,
+                    },
+                },
                 exclude: [/node_modules/, /dist/],
             },
         ],
@@ -31,7 +37,7 @@ config = {
     devtool: isPublishing ? 'source-map' : 'eval',
 
     devServer: {
-        contentBase: path.resolve('./dist'),
+        contentBase: path.resolve(dist),
     },
 
     plugins: [
@@ -39,6 +45,7 @@ config = {
             title: 'lens-flow',
             filename: path.resolve('./dist', 'index.html'),
         }),
+        new CleanWebpackPlugin([dist]),
     ],
 };
 
