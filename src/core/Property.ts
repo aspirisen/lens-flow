@@ -1,5 +1,4 @@
 import "./Transform";
-// tslint:disable-next-line:ordered-imports
 import * as types from "../types";
 import { Lens } from "../Lens";
 import { Lambda } from "../utils";
