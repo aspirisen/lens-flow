@@ -14,9 +14,8 @@ class Field<T> extends React.Component<{
   type?: string;
   label?: string;
 }> {
-  onChange: (e: any) => void;
-  onBlur: () => void;
-  onFocus: () => void;
+  private onChange: (e: any) => void;
+  private onBlur: () => void;
 
   constructor(props: any) {
     super(props);
@@ -32,11 +31,10 @@ class Field<T> extends React.Component<{
     };
   }
 
-  render() {
+  public render() {
     const { lens, label = "", type = "text" } = this.props as any;
     const style = { marginTop: 20, padding: 4 } as any;
-    const originLens = lens.getOrigin();
-    const showError = originLens && originLens.state.prop("showErrors").get();
+    const showError = lens.getOriginViewState("showErrors");
 
     const hasError =
       showError &&
@@ -77,7 +75,7 @@ class Form extends React.Component<{ lens: Lens<Person> }> {
     showErrorLens.set(false);
 
     action("submit")(lens.get());
-  };
+  }
 
   public render() {
     const { lens } = this.props;
@@ -102,11 +100,11 @@ export class FormPlaygound extends React.Component<{}, any> {
       code: {
         customValidators: [
           (code: any) =>
-            (!code || code.indexOf("abc") !== 0) && "Code must start from abc"
-        ]
-      }
-    }
-  });
+            (!code || code.indexOf("abc") !== 0) && "Code must start from abc",
+        ],
+      },
+    },
+  })
 
   private lens = new LensFlow(
     () => this.state.data,

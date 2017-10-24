@@ -101,14 +101,19 @@ export abstract class Lens<Value> {
         return { ...this.interop, value: this.get() };
     }
 
-    public getOrigin(): Lens<any> | null {
+    public getOriginViewState(key: string): any | null {
       const parent = this.parent || this.getParent();
-      if (!parent || parent === this) {
-        return this;
+      if (!parent || !parent.state) {
+        return null;
       }
 
-      if (parent.getOrigin) {
-          return parent.getOrigin();
+      const parentValue = parent.state.prop(key).get();
+      if (parentValue != null) {
+        return parentValue;
+      }
+
+      if (parent !== this) {
+        return parent.getOriginViewState(key);
       }
 
       return null;
