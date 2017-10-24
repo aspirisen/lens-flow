@@ -3,6 +3,22 @@
     "extends": ["tslint:recommended"],
     "jsRules": {},
     "rules": {
+        "arrow-parens": {
+            "severity": "warning",
+            "options": ["ban-single-arg-parens"]
+        },
+        "trailing-comma": {
+            "severity": "warning",
+            "options": {
+                "multiline": {
+                    "objects": "always",
+                    "arrays": "always",
+                    "functions": "never",
+                    "typeLiterals": "ignore"
+                },
+                "esSpecCompliant": true
+            }
+        },
         "interface-name": false,
         "max-classes-per-file": false,
         "no-unused-expression": false,

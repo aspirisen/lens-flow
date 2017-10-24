@@ -101,6 +101,24 @@ export abstract class Lens<Value> {
         return { ...this.interop, value: this.get() };
     }
 
+    public getOriginViewState(key: string): any | null {
+      const parent = this.parent || this.getParent();
+      if (!parent || !parent.state) {
+        return null;
+      }
+
+      const parentValue = parent.state.prop(key).get();
+      if (parentValue != null) {
+        return parentValue;
+      }
+
+      if (parent !== this) {
+        return parent.getOriginViewState(key);
+      }
+
+      return null;
+    }
+
     protected cache(kind: string, key: string, lens: Lens<any>) {
         if (!this.parent.lensCache[kind]) {
             this.parent.lensCache[kind] = {};
