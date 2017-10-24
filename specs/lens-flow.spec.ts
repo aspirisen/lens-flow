@@ -87,4 +87,83 @@ describe("lens-flow", () => {
         expect(immutableLens).to.be.not.equal(immutableLensSafe);
         expect(immutableLens.get()).to.be.deep.equal({ one: 111 });
     });
+
+    it("Should check that immutable StatefulLens is changed when you change its state", () => {
+        const lens = new StatefulLens({ one: 1 }, {});
+        const lensSafe = lens;
+
+        lens.state.set({ one: 11 });
+        expect(lens).to.be.equal(lensSafe);
+        expect(lens.state.get()).to.be.deep.equal({ one: 11 });
+
+        let immutableLens = lens.immutable(
+            (nextLens) => (immutableLens = nextLens),
+        );
+
+        const immutableLensSafe = immutableLens;
+
+        immutableLens.state.set({ one: 111 });
+        expect(immutableLens).to.be.not.equal(immutableLensSafe);
+        expect(immutableLens.state.get()).to.be.deep.equal({ one: 111 });
+    });
+
+    it("Should check that immutable LensFlow is changed when you change its state", () => {
+        let value = { one: 1 };
+        let state = { one: 1111 };
+
+        const lens = new LensFlow(
+            () => value,
+            (nextValue) => (value = nextValue),
+            undefined,
+            undefined,
+            () => state,
+            (newState) => state = newState,
+        );
+        const lensSafe = lens;
+
+        lens.set({ one: 11 });
+        expect(lens).to.be.equal(lensSafe);
+        expect(lens.get()).to.be.deep.equal({ one: 11 });
+
+        let immutableLens = lens.immutable(
+            (nextLens) => (immutableLens = nextLens),
+        );
+        const immutableLensSafe = immutableLens;
+
+        immutableLens.set({ one: 111 });
+        expect(immutableLens).to.be.not.equal(immutableLensSafe);
+        expect(immutableLens.get()).to.be.deep.equal({ one: 111 });
+    });
+
+    it("Should check that immutable LensFlow is changed when you change its prop state", () => {
+        let value = { one: 1 };
+        let state = { one: {two: 2} };
+
+        const lens = new LensFlow(
+            () => value,
+            (nextValue) => (value = nextValue),
+            undefined,
+            undefined,
+            () => state,
+            (newState) => state = newState,
+        );
+
+        const lensSafe = lens;
+
+        lens.state.prop('one').prop('two').set(11);
+        expect(lens).to.be.equal(lensSafe);
+        expect(lens.state.prop('one').prop('two')).to.be.equal(lens.state.prop('one').prop('two'));
+        expect(lens.state.prop('one').prop('two').get()).to.be.deep.equal(11);
+
+        let immutableLens = lens.immutable(
+            (nextLens) => (immutableLens = nextLens),
+        );
+
+        const immutableLensSafe = immutableLens;
+
+        immutableLens.state.prop('one').prop('two').set(22);
+        expect(lens).to.be.not.equal(immutableLensSafe);
+        expect(lens.state.prop('one').prop('two')).to.be.equal(lens.state.prop('one').prop('two'));
+        expect(lens.state.prop('one').prop('two').get()).to.be.deep.equal(22);
+    });
 });

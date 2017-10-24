@@ -18,7 +18,7 @@ export class State extends React.Component {
                 index: 0,
             },
         },
-        () => this.forceUpdate()
+        () => this.forceUpdate(),
     );
 
     public render() {

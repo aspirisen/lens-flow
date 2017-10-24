@@ -2,6 +2,8 @@ import { Lens } from "./Lens";
 import * as types from "./types";
 
 export class LensFlow<Value, State = any> extends Lens<Value> {
+    public state: Lens<State>;
+
     constructor(
         private getter: () => Value,
         private setter: (newValue: Value) => void,
@@ -18,7 +20,7 @@ export class LensFlow<Value, State = any> extends Lens<Value> {
         super(() => this);
 
         if (this.getState && this.setState) {
-            this.state = new LensFlow(this.getState, this.setState);
+            this.state = new LensFlow(this.getState, this.stateSetter);
         }
     }
 
@@ -27,30 +29,17 @@ export class LensFlow<Value, State = any> extends Lens<Value> {
     }
 
     public set(newValue: Value) {
-        if (this.updateInstanceOnSet) {
-            this.updateInstanceOnSet(
-                new LensFlow(
-                    this.getter,
-                    this.setter,
-                    this.metadataGetter,
-                    this.validationStateGetter,
-                    this.getState,
-                    this.setState,
-                    this.updateInstanceOnSet,
-                ),
-            );
-        }
-
+        this.updateInstance();
         this.setter(newValue);
     }
 
     public getMetadata() {
-        return this.metadataGetter ? this.metadataGetter(this.get(), this.state && this.state.get()) : {};
+        return this.metadataGetter ? this.metadataGetter(this.get(), this.state && this.state.get() as any) : {};
     }
 
     public getValidationState() {
         return this.validationStateGetter
-            ? this.validationStateGetter(this.getMetadata(), this.get(), this.state && this.state.get())
+            ? this.validationStateGetter(this.getMetadata(), this.get(), this.state && this.state.get() as any)
             : { isValid: true };
     }
 
@@ -64,5 +53,29 @@ export class LensFlow<Value, State = any> extends Lens<Value> {
             this.setState,
             updater,
         );
+    }
+
+    private stateSetter = (newState: State) => {
+        this.updateInstance();
+
+        if (this.setState) {
+            this.setState(newState);
+        }
+    }
+
+    private updateInstance() {
+        if (this.updateInstanceOnSet) {
+            this.updateInstanceOnSet(
+                new LensFlow(
+                    this.getter,
+                    this.setter,
+                    this.metadataGetter,
+                    this.validationStateGetter,
+                    this.getState,
+                    this.setState,
+                    this.updateInstanceOnSet,
+                ),
+            );
+        }
     }
 }
