@@ -10,7 +10,7 @@ export abstract class Lens<Value> {
     protected lensCache: Record<string, Record<string, Lens<any>>> = {};
 
     constructor(
-        protected getParent: () => Lens<any>,
+        protected getParent: () => Lens<any>
     ) {
         this.parent = getParent();
     }
@@ -21,7 +21,7 @@ export abstract class Lens<Value> {
     public prop<Focus extends Value[Key], Key extends keyof Value, S>(
         lambdaOrName: Key | ((v: Value) => Focus),
         defaultValue?: Focus,
-        initialState?: S,
+        initialState?: S
     ): LensProperty<Focus, Value> {
         return new LensProperty(() => this, lambdaOrName, defaultValue, initialState);
     }
@@ -33,20 +33,20 @@ export abstract class Lens<Value> {
     public array<Focus>(
         this: Lens<{[k in keyof Value]: Focus[] | {}}>,
         getterOrName: keyof Value | ((v: Value) => Focus[]),
-        idField?: keyof Focus,
+        idField?: keyof Focus
     ): ArrayLensProperty<Focus, Value> {
         return new ArrayLensProperty(() => this, getterOrName, idField);
     }
 
     public defaultValue(defaultValue: Value): Lens<Value> {
-        return this.transform((val) => val == null ? defaultValue : val);
+        return this.transform( val => val == null ? defaultValue : val);
     }
 
     public transform<T2>(
         toView?: (val: Value) => T2,
         toModel?: (viewVal: T2, modelVal: Value) => Value,
         getMetadata?: (parentMeta: types.Metadata<Value>) => types.Metadata<Value>,
-        getValidationState?: (parentValidationState: types.ValidationState) => types.ValidationState,
+        getValidationState?: (parentValidationState: types.ValidationState) => types.ValidationState
     ) {
         return new TransformLens(() => this, toView, toModel, getMetadata, getValidationState);
     }
@@ -55,7 +55,7 @@ export abstract class Lens<Value> {
         toView?: (val: types.TurnTransform<Value, any>) => types.TurnTransform<T2, S2>,
         toModel?: (viewVal: types.TurnTransform<T2, S2>, modelVal: types.TurnTransform<Value, any>) => types.TurnTransform<Value, any>,
         getMetadata?: (parentMeta: types.Metadata<Value>) => types.Metadata<Value>,
-        getValidationState?: (parentValidationState: types.ValidationState) => types.ValidationState,
+        getValidationState?: (parentValidationState: types.ValidationState) => types.ValidationState
     ): TransformViewState<Value, any, T2, S2> {
         return new TransformViewState(() => this, toView, toModel, getMetadata, getValidationState);
     }
@@ -94,7 +94,7 @@ export abstract class Lens<Value> {
     public getInterop() {
         if (!this.interop) {
             this.interop = {
-                onChange: (v) => this.set(v),
+                onChange: v => this.set(v),
             } as types.Interop<Value>;
         }
 

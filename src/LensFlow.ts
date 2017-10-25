@@ -11,11 +11,11 @@ export class LensFlow<Value, State = any> extends Lens<Value> {
         private validationStateGetter?: (
             meta: types.Metadata<Value>,
             value: Value,
-            state: State,
+            state: State
         ) => types.ValidationState,
         private getState?: () => State,
         private setState?: (newState: State) => void,
-        protected updateInstanceOnSet?: (nextLens: LensFlow<Value, State>) => void,
+        protected updateInstanceOnSet?: (nextLens: LensFlow<Value, State>) => void
     ) {
         super(() => this);
 
@@ -51,7 +51,7 @@ export class LensFlow<Value, State = any> extends Lens<Value> {
             this.validationStateGetter,
             this.getState,
             this.setState,
-            updater,
+            updater
         );
     }
 
@@ -73,8 +73,8 @@ export class LensFlow<Value, State = any> extends Lens<Value> {
                     this.validationStateGetter,
                     this.getState,
                     this.setState,
-                    this.updateInstanceOnSet,
-                ),
+                    this.updateInstanceOnSet
+                )
             );
         }
     }

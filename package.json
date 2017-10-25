@@ -1,6 +1,6 @@
 {
     "name": "lens-flow",
-    "version": "1.2.7",
+    "version": "1.2.8",
     "description": "",
     "main": "dist/ts/index.js",
     "types": "./dist/ts/index.d.ts",

@@ -79,7 +79,7 @@ export class App extends React.Component<{}, Structure> {
         () => this.state,
         (data) => this.setState(data),
         this.getMeta,
-        (meta, value) => validate(value, meta),
+        (meta, value) => validate(value, meta)
     );
 
     public render() {

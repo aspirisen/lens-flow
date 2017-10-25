@@ -7,7 +7,7 @@ export class StatefulLens<Value, State = any> extends Lens<Value> {
         protected value: Value,
         protected initialState: Partial<State>,
         protected onChange?: () => void,
-        protected updateInstanceOnSet?: (nextLens: StatefulLens<Value>) => void,
+        protected updateInstanceOnSet?: (nextLens: StatefulLens<Value>) => void
     ) {
         super(() => this);
 
@@ -32,7 +32,7 @@ export class StatefulLens<Value, State = any> extends Lens<Value> {
     private onSet = () => {
         if (this.updateInstanceOnSet) {
             this.updateInstanceOnSet(
-                new StatefulLens(this.value, this.initialState, this.onChange, this.updateInstanceOnSet),
+                new StatefulLens(this.value, this.initialState, this.onChange, this.updateInstanceOnSet)
             );
         }
 

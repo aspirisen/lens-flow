@@ -18,15 +18,13 @@ export class State extends React.Component {
                 index: 0,
             },
         },
-        () => this.forceUpdate(),
+        () => this.forceUpdate()
     );
 
     public render() {
         const turnLens = this.lens
             .prop('turn')
-            .turn(
-                (v) => ({ value: `${v.value} ${v.state.index}`, state: v.state }),
-                (v) => ({ value: v.value, state: { index: v.state.index + 2 } }),
+            .turn( v => ({ value: `${v.value} ${v.state.index}`, state: v.state }), v => ({ value: v.value, state: { index: v.state.index + 2 } })
             );
 
         return (

@@ -26,7 +26,7 @@ describe("lens-flow", () => {
                         },
                     },
                 },
-            }),
+            })
         );
 
         const objProp = lens.prop((s) => s.obj);
@@ -57,7 +57,7 @@ describe("lens-flow", () => {
         expect(lens.get()).to.be.deep.equal({ one: 11 });
 
         let immutableLens = lens.immutable(
-            (nextLens) => (immutableLens = nextLens),
+            (nextLens) => (immutableLens = nextLens)
         );
         const immutableLensSafe = immutableLens;
 
@@ -70,7 +70,7 @@ describe("lens-flow", () => {
         let value = { one: 1 };
         const lens = new LensFlow(
             () => value,
-            (nextValue) => (value = nextValue),
+            (nextValue) => (value = nextValue)
         );
         const lensSafe = lens;
 
@@ -79,7 +79,7 @@ describe("lens-flow", () => {
         expect(lens.get()).to.be.deep.equal({ one: 11 });
 
         let immutableLens = lens.immutable(
-            (nextLens) => (immutableLens = nextLens),
+            (nextLens) => (immutableLens = nextLens)
         );
         const immutableLensSafe = immutableLens;
 
@@ -97,7 +97,7 @@ describe("lens-flow", () => {
         expect(lens.state.get()).to.be.deep.equal({ one: 11 });
 
         let immutableLens = lens.immutable(
-            (nextLens) => (immutableLens = nextLens),
+            (nextLens) => (immutableLens = nextLens)
         );
 
         const immutableLensSafe = immutableLens;
@@ -117,7 +117,7 @@ describe("lens-flow", () => {
             undefined,
             undefined,
             () => state,
-            (newState) => state = newState,
+            (newState) => state = newState
         );
         const lensSafe = lens;
 
@@ -126,7 +126,7 @@ describe("lens-flow", () => {
         expect(lens.get()).to.be.deep.equal({ one: 11 });
 
         let immutableLens = lens.immutable(
-            (nextLens) => (immutableLens = nextLens),
+            (nextLens) => (immutableLens = nextLens)
         );
         const immutableLensSafe = immutableLens;
 
@@ -145,7 +145,7 @@ describe("lens-flow", () => {
             undefined,
             undefined,
             () => state,
-            (newState) => state = newState,
+            (newState) => state = newState
         );
 
         const lensSafe = lens;
@@ -156,7 +156,7 @@ describe("lens-flow", () => {
         expect(lens.state.prop('one').prop('two').get()).to.be.deep.equal(11);
 
         let immutableLens = lens.immutable(
-            (nextLens) => (immutableLens = nextLens),
+            (nextLens) => (immutableLens = nextLens)
         );
 
         const immutableLensSafe = immutableLens;

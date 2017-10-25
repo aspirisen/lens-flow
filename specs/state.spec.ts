@@ -10,6 +10,19 @@ describe("state", () => {
             .to.exist;
     });
 
+    it("Should have state in TransformLens ", () => {
+        const lens = getLens().transform(v => v, v => v);
+
+        expect(lens.state)
+            .to.exist;
+
+        const prop = getLens().transform(v => v, v => v).prop('name');
+
+        expect(prop.state)
+            .to.exist;
+
+    });
+
     it("Should change state in lens and do not mutate value in lens ", () => {
         const lens = getLens();
 

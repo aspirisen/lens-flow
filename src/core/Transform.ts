@@ -9,10 +9,14 @@ export class TransformLens<T1, T2> extends Lens<T2> {
         private getterTransformer?: (from: T1) => T2,
         private setterTransformer?: (mapped: T2, actual: T1) => T1,
         private metadataTransformer?: (parentMeta: types.Metadata<T1>) => types.Metadata<T1>,
-        private validationStateTransformer?: (parentState: types.ValidationState) => types.ValidationState,
+        private validationStateTransformer?: (parentState: types.ValidationState) => types.ValidationState
 
     ) {
         super(getParent);
+
+        if (this.parent.state) {
+            this.state = this.parent.state;
+        }
     }
 
     public get(): T2 {
@@ -63,12 +67,12 @@ export class TransformViewState<T1, S1, T2, S2> extends TransformLens<T1, T2> {
         private toView?: (val: types.TurnTransform<T1, S1>) => types.TurnTransform<T2, S2>,
         private toModel?: (viewVal: types.TurnTransform<T2, S2>, modelVal: types.TurnTransform<T1, S1>) => types.TurnTransform<T1, S1>,
         metadataTransformer?: (parentMeta: types.Metadata<T1>) => types.Metadata<T1>,
-        validationStateTransformer?: (parentState: types.ValidationState) => types.ValidationState,
+        validationStateTransformer?: (parentState: types.ValidationState) => types.ValidationState
     ) {
         super(getParent, undefined, undefined, metadataTransformer, validationStateTransformer);
 
         if (this.parent.state) {
-            this.state = this.parent.state.transform(() => this.getState(), (state) => this.computeComplexValue({ state }).state);
+            this.state = this.parent.state.transform(() => this.getState(), state => this.computeComplexValue({ state }).state);
         }
     }
 

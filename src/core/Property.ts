@@ -11,7 +11,7 @@ export class LensProperty<Value, ParentValue> extends Lens<Value> {
         protected getParent: () => Lens<any>,
         protected lambdaOrName: keyof ParentValue | ((v: ParentValue) => Value),
         protected defaultOnNullValue?: Value,
-        protected initialState?: any,
+        protected initialState?: any
     ) {
         super(getParent);
 
@@ -139,7 +139,7 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
         protected getParent: () => Lens<any>,
         protected lambdaOrName: keyof ParentValue | ((v: ParentValue) => Value[]),
         protected idField?: keyof Value,
-        protected defaultOnNullValue?: Value[],
+        protected defaultOnNullValue?: Value[]
     ) {
         super(getParent, lambdaOrName, defaultOnNullValue);
     }
@@ -183,11 +183,11 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
 
         if (what instanceof Lens) {
             const value = what.get();
-            items = items.filter((i) => i !== value);
+            items = items.filter( i => i !== value);
         } else if (typeof what === "object") {
-            items = items.filter((i) => i !== what);
+            items = items.filter( i => i !== what);
         } else {
-            items = items.filter((i) => this.idField && i[this.idField] !== what);
+            items = items.filter( i => this.idField && i[this.idField] !== what);
         }
 
         this.set(items);
@@ -215,7 +215,7 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
         if (this.idField) {
             const newItemsIds: Record<string, boolean> = {};
 
-            items.forEach((item) => {
+            items.forEach( item => {
                 if (this.idField) {
                     let id = item[this.idField];
 
@@ -228,7 +228,7 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
                 }
             });
 
-            result = result.filter((i) => this.idField ? !newItemsIds[i[this.idField] as any as string] : true);
+            result = result.filter( i => this.idField ? !newItemsIds[i[this.idField] as any as string] : true);
         }
 
         result = result.concat(items);
