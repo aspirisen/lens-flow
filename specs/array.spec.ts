@@ -185,4 +185,13 @@ describe("array", () => {
 
         expect(found && found.get()).to.deep.equal(value.list[0]);
     });
+
+    it("#slice: Should return array with first item", () => {
+        const lens = getLens();
+        const arrLens = lens.array("list");
+
+        const result = arrLens.slice(0, 1);
+
+        expect(result.get()).to.deep.equal([value.list[0]]);
+    });
 });
