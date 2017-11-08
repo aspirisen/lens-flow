@@ -178,6 +178,12 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
         return result;
     }
 
+    public slice(begin: number | undefined, end: number | undefined) {
+        const data = this.get() || [];
+
+        return new ArrayLensProperty(() => this, this.lambdaOrName, this.idField, data.slice(begin, end));
+    }
+
     public remove(what: Value[keyof Value] | Value | Lens<Value>) {
         let items = this.get() || [];
 
