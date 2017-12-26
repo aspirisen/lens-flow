@@ -1,6 +1,11 @@
 import { expect } from "chai";
 import { getLens, value } from "./mock";
 
+interface IList {
+    id: number;
+    name: string;
+}
+
 describe("array", () => {
 
     it("Should get lens array by key", () => {
@@ -21,7 +26,7 @@ describe("array", () => {
 
     it("Should remove by lens", () => {
         const lens = getLens();
-        const list = lens.array("list");
+        const list = lens.array<IList>("list");
         list.remove(list.item(0));
 
         const listValue = list.get();
@@ -37,7 +42,7 @@ describe("array", () => {
 
     it("Should remove by id ", () => {
         const lens = getLens();
-        const list = lens.array("list", "id");
+        const list = lens.array<IList>("list", "id");
         (list.get() || [])[0].id;
         list.remove(1);
 
@@ -47,7 +52,7 @@ describe("array", () => {
 
     it("Should remove by object reference ", () => {
         const lens = getLens();
-        const list = lens.array("list", "id");
+        const list = lens.array<IList>("list", "id");
         const three = {
             id: 3,
             name: "three",
@@ -72,7 +77,7 @@ describe("array", () => {
 
     it("Should set to array", () => {
         const lens = getLens();
-        const list = lens.array("list");
+        const list = lens.array<IList>("list");
         list.item(0).prop("name").set("Kate");
 
         expect(lens.array("list").get())
@@ -150,7 +155,7 @@ describe("array", () => {
 
     it("#find: Should find an item in array", () => {
         const lens = getLens();
-        const list = lens.array("list");
+        const list = lens.array<IList>("list");
         const found = list.find((lensItem, {}, {}, item) => {
             const lensValue = lensItem.get();
             return Boolean(lensValue && lensValue.name === "two" && item.name === "two");
@@ -162,7 +167,7 @@ describe("array", () => {
 
     it("#find: Should return null from array", () => {
         const lens = getLens();
-        const emptyArrayLens = lens.array("objNull");
+        const emptyArrayLens = lens.array<IList>("objNull");
 
         const found = emptyArrayLens.find((lensItem, {}, {}, item) => {
             const lensValue = lensItem.get();
@@ -174,7 +179,7 @@ describe("array", () => {
 
     it("#find: Should return first found item from array", () => {
         const lens = getLens();
-        const arrLens = lens.array("list");
+        const arrLens = lens.array<IList>("list");
 
         arrLens.insert({...value.list[0], id: 3});
 
