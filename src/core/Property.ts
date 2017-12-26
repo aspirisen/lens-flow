@@ -75,7 +75,7 @@ export class LensProperty<Value, ParentValue> extends Lens<Value> {
         const parentMeta = this.parent.getMetadata();
 
         if (parentMeta && parentMeta.props) {
-            return parentMeta.props[this.propName];
+            return parentMeta.props[this.propName] as any;
         }
 
         return {};
@@ -178,7 +178,7 @@ export class ArrayLensProperty<Value, ParentValue> extends LensProperty<Value[],
         return result;
     }
 
-    public slice(begin: number | undefined, end: number | undefined) {
+    public slice(begin: number | undefined, end: number | undefined): any {
         const data = this.get() || [];
 
         return new ArrayLensProperty(() => this, this.lambdaOrName, this.idField, data.slice(begin, end));
