@@ -31,7 +31,6 @@ export abstract class Lens<Value> {
     }
 
     public array<Focus>(
-        this: Lens<{[k in keyof Value]: Focus[] | {}}>,
         getterOrName: keyof Value | ((v: Value) => Focus[]),
         idField?: keyof Focus
     ): ArrayLensProperty<Focus, Value> {

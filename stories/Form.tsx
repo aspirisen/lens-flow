@@ -62,6 +62,12 @@ class Field<T> extends React.Component<{
   }
 }
 
+type IStringField = new () => Field<string>;
+const StringField = Field as IStringField;
+
+type INumberField = new () => Field<number>;
+const NumberField = Field as INumberField;
+
 class Form extends React.Component<{ lens: Lens<Person> }> {
   private submit = () => {
     const { lens } = this.props;
@@ -83,9 +89,9 @@ class Form extends React.Component<{ lens: Lens<Person> }> {
     return (
       <div>
         <button onClick={this.submit}>Submit</button>
-        <Field label="Name" lens={lens.prop(p => p.name)} />
-        <Field label="Age" lens={lens.prop(p => p.age)} type="number" />
-        <Field label="Code" lens={lens.prop(p => p.code)} />
+        <StringField label="Name" lens={lens.prop(p => p.name)} />
+        <NumberField label="Age" lens={lens.prop(p => p.age)} type="number" />
+        <StringField label="Code" lens={lens.prop(p => p.code)} />
       </div>
     );
   }

@@ -5,7 +5,7 @@ export class StatefulLens<Value, State = any> extends Lens<Value> {
 
     constructor(
         protected value: Value,
-        protected initialState: Partial<State>,
+        protected initialState?: Partial<State>,
         protected onChange?: () => void,
         protected updateInstanceOnSet?: (nextLens: StatefulLens<Value>) => void
     ) {
